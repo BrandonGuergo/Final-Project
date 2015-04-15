@@ -1,0 +1,1420 @@
+#include <iostream>
+#include <cstdlib>
+#include <string.h>
+#include <stdio.h>
+
+using namespace std;
+
+class TicTacToe                 //declaring class and its members
+{
+private:
+    void printBoard();
+    int chooseLevel();
+    bool CoinFlip();
+    void compLogicEasy(int);
+    void compLogicRandom(int);
+    void compLogicHard(int);
+    bool checkFin();
+    char tic[3][3];
+    void userMove(int);
+    int ranNumber();
+    void methodEasy();
+    void methodRandom();
+    void methodImpossible();
+    
+    
+public:
+    TicTacToe(int x);
+    bool line1 = true;
+    bool line2 = true;
+    bool line3 = true;
+    bool line4 = true;
+    bool line5 = true;
+    bool line6 = true;
+    bool line7 = true;
+    bool line8 = true;
+ 
+};
+
+TicTacToe::TicTacToe(int x)
+{
+    int playAgain=0;
+    while(playAgain==0)         //loop to allow user to play again
+    {
+        for (int row=0; row<3; row++)           //creating char matrix tic with ' ' as the original values
+        {
+            for (int column=0; column<3; column++)
+            {
+                tic[row][column]=' ';
+            }
+        }
+        cout<< "Welcome to Tic Tac Toe!"<< endl;        //Rules of the game being stated
+        cout<< "Rules:"<<endl;
+        cout<< "Who goes first (user or A.I.) is determined by a coin flip."<< endl;
+        cout<< "The goal of this game is to get 3 X's or O's in a row ,colomn ,or diagonal."<< endl;
+        cout<< "Turns will be taken in an alternating pattern starting with the winner of the coin flip."<< endl;
+        cout<< "The winner of the coin flip will be X and the loser will be O.\n"<< endl;
+    
+        int x=chooseLevel();            //calls the chooselevel function
+    
+        cout<< "Here is your board"<<endl;
+
+        printBoard();       //prints board
+    
+        if(x==1)
+        {
+            methodEasy();       //executes easy code
+        }
+        
+        else if (x==2)
+        {
+            methodRandom();     //executes random(medium) code
+        }
+        
+        else if (x==3)
+        {
+            methodImpossible();     //executes impossible code
+        }
+        
+        int endGame=0;
+        while(endGame==0)           //loop used to limit user inputs
+        {
+            cout<<"Would you like to play again(y/n)?"<<endl;
+            char yORn;
+            cin>>yORn;
+            if(yORn=='y'||yORn=='Y')
+            {
+                playAgain=0;
+                endGame=1;
+            }
+        
+            else if(yORn=='n'||yORn=='N')
+            {
+                cout<<"Have a nice day!!!"<<endl;       //exit message
+                cout<<"/)/)"<<endl;
+                cout<<"(o.o)   RABBIT!!"<<endl;
+                cout<<"(VV)"<<endl;
+                playAgain=1;
+                endGame=1;
+            }
+            
+            else
+            {
+                cout<<"Not a proper input. Please choose again."<<endl;     //bad input message
+                endGame=0;
+            }
+        }
+    }
+}
+void TicTacToe::printBoard()            //building board
+{
+    cout<< "  1   2  3"<<endl;
+    cout<< "1 "<<tic[0][0]<<" | "<<tic[0][1]<<" | "<<tic[0][2]<<endl;
+    cout<<"  ---------"<<endl;
+    cout<< "2 "<<tic[1][0]<<" | "<<tic[1][1]<<" | "<<tic[1][2]<<endl;
+    cout<<"  ---------"<<endl;
+    cout<< "3 "<<tic[2][0]<<" | "<<tic[2][1]<<" | "<<tic[2][2]<<"\n"<<endl;
+}
+
+int TicTacToe::chooseLevel()
+{
+    int ret;
+    int t=0;
+    while(t==0)     //loop to control user input
+    {
+        cout<< "Select your difficulty(1/2/3)."<<endl;      //list of difficulty settings
+        cout<< "1: Easy"<<endl;
+        cout<< "2: Medium"<<endl;
+        cout<< "3: Impossible"<< endl;
+        
+        char level;
+        cin>>level;
+    
+        int t;
+    
+        if(level=='1')      //menu for easy difficulty
+        {
+            cout<<"You have chosen easy. Are you sure (y/n)?"<<endl;
+            char y;
+            cin>>y;
+            if(y=='y'||y=='Y')
+            {
+                cout<<"Ok"<<endl;
+                t=1;
+                ret=1;
+                return ret;
+            }
+        
+            else if(y=='n'||y=='N')
+            {
+                cout<<"Choose again"<<endl;
+                t=0;
+            }
+            
+            else
+            {
+                cout<<"Not a proper imput. Please choose again."<<endl;
+                t=0;
+            }
+        }
+        
+        else if(level=='2')     //menu for medium difficulty
+        {
+            cout<<"You have chosen medium. Are you sure (y/n)?"<<endl;
+            char y;
+            cin>>y;
+            if(y=='y'||y=='Y')
+            {
+                cout<<"Ok"<<endl;
+                t=1;
+                ret=2;
+                return ret;
+            }
+            
+            else if(y=='n'||y=='N')
+            {
+                cout<<"Choose again"<<endl;
+                t=0;
+            }
+            
+            else
+            {
+                cout<<"Not a proper imput. Please choose again."<<endl;
+                t=0;
+            }
+        }
+        
+        else if(level=='3')     //menu for impossible difficulty
+        {
+            cout<<"You have chosen impossible. Are you sure (y/n)?"<<endl;
+            char y;
+            cin>>y;
+            if(y=='y'||y=='Y')
+            {
+                cout<<"ARE YOU INSANE(y/n)?"<<endl;
+                char y;
+                cin>>y;
+                
+                if(y=='y'||y=='Y')      //answers question in line 194
+                {
+                    cout<<"Good luck you're going to need it"<<endl;
+                    t=1;
+                    ret=3;
+                    return ret;
+                }
+                
+                else if(y=='n'||y=='N')
+                {
+                    cout<<"Choose again"<<endl;
+                    t=0;
+                }
+                
+                else
+                {
+                    cout<<"Not a proper imput. Please choose again."<<endl;
+                    t=0;
+                }
+
+            }
+            
+            else if(y=='n'||y=='N')
+            {
+                cout<<"Choose again"<<endl;
+                t=0;
+            }
+            
+            else
+            {
+                cout<<"Not a proper imput. Please choose again."<<endl;
+                t=0;
+            }
+        }
+        
+        else
+        {
+            cout<<"Not a proper imput. Please choose again."<<endl;
+            t=0;
+        }
+    }
+    return ret;
+}
+
+bool TicTacToe::CoinFlip()         //method for coin flip
+{
+    int v=ranNumber();          //makes random number v
+    int x=0;
+    while (x==0)                //loop to control user input
+    {
+        cout<<"Enter heads or tails (h/t)."<<endl;
+        char HorT;
+        cin>>HorT;
+        
+        if(HorT=='H' || HorT=='T'||HorT=='t' ||HorT=='h')       //Algorithm for coin flip
+        {
+            if (HorT=='H' ||HorT=='h')
+            {
+                if(v%2==0)      //if random number is even and h is selected
+                {
+                    cout<< "You won the coin flip! You go first and you are X."<< endl;
+                    x=1;
+                    return true;
+                }
+                
+                else
+                {
+                    cout<< "You lost the coin flip :( The A.I. goes first and you are O"<< endl;
+                    x=1;
+                    return false;
+                }
+            }
+            
+            if (HorT=='t' ||HorT=='T')
+            {
+                if(v%2!=0)      //if random number is odd and t is selected
+                {
+                    cout<< "You won the coin flip! You go first and you are X."<< endl;
+                    x=1;
+                    return true;
+                }
+                
+                else
+                {
+                    cout<< "You lost the coin flip :( The A.I. goes first and you are O"<< endl;
+                    x=1;
+                    return false;
+                }
+            }
+        }
+        
+        
+        else
+        {
+            cout<< "Not a proper input. Enter H for heads or T for tails"<< endl;   //returns to begining of loop
+            x=0;
+        }
+    }
+    return false;
+}
+
+bool TicTacToe::checkFin()
+{
+     //checks first row
+    if((tic[0][0] == tic[0][1] && tic[0][1] == tic[0][2])&&(tic[0][0]=='O'||tic[0][0]=='X'))
+    {
+        return true;
+    }
+    //checks second row
+    if((tic[1][0] == tic[1][1] && tic[1][1] == tic[1][2])&&(tic[1][1]=='O'||tic[1][1]=='X'))
+    {
+        return true;
+    }
+    //checks third row
+    if((tic[2][0] == tic[2][1] && tic[2][1] == tic[2][2] )&&(tic[2][1]=='O'||tic[2][1]=='X'))
+    {
+        return true;
+    }
+    
+    //checks first column
+    if((tic[0][0] == tic[1][0] && tic[1][0] == tic[2][0]) &&(tic[0][0]=='O'||tic[0][0]=='X'))
+    {
+        return true;
+    }
+    //checks second column
+    if((tic[0][1] == tic[1][1] && tic[1][1] == tic[2][1] )&&(tic[1][1]=='O'||tic[1][1]=='X'))
+    {
+        return true;
+    }
+    
+    //checks third column
+    if((tic[0][2] == tic[1][2] && tic[1][2] == tic[2][2] )&&(tic[1][2]=='O'||tic[1][2]=='X'))
+    {
+        return true;
+    }
+     //checks first diagonal
+    if((tic[0][0] == tic[1][1] && tic[1][1] == tic[2][2] )&&(tic[0][0]=='O'||tic[0][0]=='X'))
+    {
+        return true;
+    }
+        
+    //checks second diagonal
+    if((tic[0][2] == tic[1][1] && tic[1][1] == tic[2][0]) &&(tic[1][1]=='O'||tic[1][1]=='X'))
+    {
+        return true;
+    }
+    
+    else
+    {
+        return false;
+    }
+    return false;
+}
+
+void TicTacToe::compLogicEasy(int move)     //logic for easy algorithm
+{
+    if(move == 1)
+    {
+        tic[0][0] = 'X';        //start at possition 1 1
+    }
+    
+    else if(move == 2)
+    {
+        if(tic[0][0] == 'X')
+        {
+            tic[0][1] = 'O';        //moves to next available space throughout algorithm
+        }
+        
+        else
+        {
+            tic[0][0] = 'O';
+        }
+    }
+    
+    else if(move == 3)          //odd numbered moves mean the AI is "X"
+    {
+        if(tic[0][1] == 'O')
+        {
+            tic[0][2] = 'X';
+        }
+        
+        else
+        {
+            tic[0][1] = 'X';
+        }
+    }
+    
+    else if(move == 4)          //even numbered moves mean that the AI is "O"
+    {
+        if(tic[0][1] == ' ')
+        {
+            tic[0][1] = 'O';
+        }
+        
+        else if(tic[0][2] == ' ')
+        {
+            tic[0][2] = 'O';
+        }
+        
+        else if(tic[1][0] == ' ')
+        {
+            tic[1][0] = 'O';
+        }
+        
+        else if(tic[1][1] == ' ')
+        {
+            tic[1][1] = 'O';
+        }
+        else if(tic[1][2] == ' ')
+        {
+            tic[1][2] = 'O';
+        }
+        
+        else if(tic[2][0] == ' ')
+        {
+            tic[2][0] = 'O';
+        }
+        
+        else if(tic[2][1] == ' ')
+        {
+            tic[2][1] = 'O';
+        }
+        
+        else
+        {
+            tic[2][2] = 'O';
+        }
+    }
+    
+    else if(move == 5)
+    {
+        if(tic[0][1] == ' ')
+        {
+            tic[0][1] = 'X';
+        }
+        
+        else if(tic[0][2] == ' ')
+        {
+            tic[0][2] = 'X';
+        }
+        
+        else if(tic[1][0] == ' ')
+        {
+            tic[1][0] = 'X';
+        }
+        
+        else if(tic[1][1] == ' ')
+        {
+            tic[1][1] = 'X';
+        }
+        
+        else if(tic[1][2] == ' ')
+        {
+            tic[1][2] = 'X';
+        }
+        
+        else if(tic[2][0] == ' ')
+        {
+            tic[2][0] = 'X';
+        }
+        
+        else if(tic[2][1] == ' ')
+        {
+            tic[2][1] = 'X';
+        }
+        
+        else
+        {
+            tic[2][2] = 'X';
+        }
+    }
+    
+    else if(move == 6)
+    {
+        if(tic[0][1] == ' ')
+        {
+            tic[0][1] = 'O';
+        }
+        
+        else if(tic[0][2] == ' ')
+        {
+            tic[0][2] = 'O';
+        }
+        
+        else if(tic[1][0] == ' ')
+        {
+            tic[1][0] = 'O';
+        }
+        
+        else if(tic[1][1] == ' ')
+        {
+            tic[1][1] = 'O';
+        }
+        
+        else if(tic[1][2] == ' ')
+        {
+            tic[1][2] = 'O';
+        }
+        
+        else if(tic[2][0] == ' ')
+        {
+            tic[2][0] = 'O';
+        }
+        
+        else if(tic[2][1] == ' ')
+        {
+            tic[2][1] = 'O';
+        }
+        
+        else
+        {
+            tic[2][2] = 'O';
+        }
+    }
+    
+    else if(move == 7)          //options increase in number as move number increases
+    {
+        if(tic[0][1] == ' ')
+        {
+            tic[0][1] = 'X';
+        }
+        
+        else if(tic[0][2] == ' ')
+        {
+            tic[0][2] = 'X';
+        }
+        
+        else if(tic[1][0] == ' ')
+        {
+            tic[1][0] = 'X';
+        }
+        
+        else if(tic[1][1] == ' ')
+        {
+            tic[1][1] = 'X';
+        }
+        
+        else if(tic[1][2] == ' ')
+        {
+            tic[1][2] = 'X';
+        }
+        
+        else if(tic[2][0] == ' ')
+        {
+            tic[2][0] = 'X';
+        }
+        
+        else if(tic[2][1] == ' ')
+        {
+            tic[2][1] = 'X';
+        }
+        
+        else
+        {
+            tic[2][2] = 'X';
+        }
+    }
+    
+    else if(move == 8)
+    {
+        if(tic[0][1] == ' ')
+        {
+            tic[0][1] = 'O';
+        }
+        
+        else if(tic[0][2] == ' ')
+        {
+            tic[0][2] = 'O';
+        }
+        
+        else if(tic[1][0] == ' ')
+        {
+            tic[1][0] = 'O';
+        }
+        
+        else if(tic[1][1] == ' ')
+        {
+            tic[1][1] = 'O';
+        }
+        
+        else if(tic[1][2] == ' ')
+        {
+            tic[1][2] = 'O';
+        }
+        
+        else if(tic[2][0] == ' ')
+        {
+            tic[2][0] = 'O';
+        }
+        
+        else if(tic[2][1] == ' ')
+        {
+            tic[2][1] = 'O';
+        }
+        
+        else
+        {
+            tic[2][2] = 'O';
+        }
+    }
+    
+    else
+    {
+        if(tic[0][1] == ' ')
+        {
+            tic[0][1] = 'X';
+        }
+        
+        else if(tic[0][2] == ' ')
+        {
+            tic[0][2] = 'X';
+        }
+        
+        else if(tic[1][0] == ' ')
+        {
+            tic[1][0] = 'X';
+        }
+        
+        else if(tic[1][1] == ' ')
+        {
+            tic[1][1] = 'X';
+        }
+        
+        else if(tic[1][2] == ' ')
+        {
+            tic[1][2] = 'X';
+        }
+        
+        else if(tic[2][0] == ' ')
+        {
+            tic[2][0] = 'X';
+        }
+        
+        else if(tic[2][1] == ' ')
+        {
+            tic[2][1] = 'X';
+        }
+        
+        else
+        {
+            tic[2][2] = 'X';
+        }
+    }
+}
+
+void TicTacToe::compLogicRandom(int move)       //logic for medium(random) algorithm
+{
+    if ((move % 2) == 0)            //case for even numbered moves
+    {
+        for(int i = 0; i < 1; )
+        {
+            int x = 0;
+            int y = 0;
+            int m = ranNumber();        //calls for the random number function
+            if(m == 1)
+            {
+                x = 0;
+                y = 0;
+            }
+            
+            else if(m == 2)         //each random number has a specific location
+            {
+                x = 0;
+                y = 1;
+            }
+            
+            else if(m == 3)
+            {
+                x = 0;
+                y = 2;
+            }
+            
+            else if(m == 4)
+            {
+                x = 1;
+                y = 0;
+            }
+            else if(m == 5)
+            {
+                x = 1;
+                y = 1;
+            }
+            
+            else if(m == 6)
+            {
+                x = 1;
+                y = 2;
+            }
+            
+            else if(m == 7)
+            {
+                x = 2;
+                y = 0;
+            }
+            else if(m == 8)
+            {
+                x = 2;
+                y = 1;
+            }
+            
+            else
+            {
+                x = 2;
+                y = 2;
+            }
+            
+            if(tic[x][y] == ' ')        //checks if space is open
+            {
+                tic[x][y] = 'O';        //because move is even, "X" is put in the open space
+                i++;
+            }
+        }
+    }
+    
+    else {
+        for(int i = 0; i < 1; )         //case for odd numbered moves
+        {
+            int x = 0;
+            int y = 0;
+            int m = ranNumber();
+            if(m == 1)
+            {
+                x = 0;
+                y = 0;
+            }
+            
+            else if(m == 2)
+            {
+                x = 0;
+                y = 1;
+            }
+            
+            else if(m == 3)
+            {
+                x = 0;
+                y = 2;
+            }
+            
+            else if(m == 4)
+            {
+                x = 1;
+                y = 0;
+            }
+            
+            else if(m == 5)
+            {
+                x = 1;
+                y = 1;
+            }
+            
+            else if(m == 6)
+            {
+                x = 1;
+                y = 2;
+            }
+            
+            else if(m == 7)
+            {
+                x = 2;
+                y = 0;
+            }
+            
+            else if(m == 8)
+            {
+                x = 2;
+                y = 1;
+            }
+            
+            else
+            {
+                x = 2;
+                y = 2;
+            }
+            
+            if(tic[x][y] == ' ')        //checks if space is open
+            {
+                tic[x][y] = 'X';        //because move is even, "X" is put in the open space
+                i++;
+            }
+        }
+    }
+}
+
+
+int TicTacToe::ranNumber()          //creates random number between 1 and 9
+{
+    int move1 = 0;
+    move1 = rand() % 9 + 1;
+    return move1;
+}
+    
+
+void TicTacToe::compLogicHard(int move)     //logic for hard (impossible) method
+{
+        if(move == 1)               //action for move 1
+        {
+            tic[1][1] = 'X';        //placing "X" here removes 4 out of 8 ways of winning for user
+            line2 = false;
+            line5 = false;
+            line7 = false;
+            line8 = false;
+        }
+        
+        else if(move == 3)          //action for move 3
+        {
+            if(tic[0][0] == 'O')    //case 1
+            {
+                tic[2][2] = 'X';    //move removes 2 ways of winning for user totalling 2 ways remaining
+                line3 = false;
+                line6 = false;
+            }
+            
+            else if(tic[2][2] == 'O')       //case 2
+            {
+                tic[0][0] = 'X';            //move removes 2 ways of winning for user totalling 2 ways remaining
+                line1 = false;
+                line4 = false;
+            }
+            
+            else if(tic[0][2] == 'O')       //case 3
+            {
+                tic[0][0] = 'X';            //move removes 2 ways of winning for user totalling 2 ways remaining
+                line1 = false;
+                line4 = false;
+            }
+            
+            else if(tic[2][0] == 'O')       //case 4
+            {
+                tic[0][0] = 'X';            //move removes 2 ways of winning for user totalling 2 ways remaining
+                line1 = false;
+                line4 = false;
+            }
+            
+            else if(tic[1][2] == 'O')       //case 5
+            {
+                tic[0][0] = 'X';            //move removes 2 ways of winning for user totalling 2 ways remaining
+                line1 = false;
+                line4 = false;
+            }
+            
+            else if(tic[0][1] == 'O')       //case 6
+            {
+                tic[0][0] = 'X';            //move removes 2 ways of winning for user totalling 2 ways remaining
+                line1 = false;
+                line4 = false;
+            }
+            
+            else if(tic[1][0] == 'O')       //case 7
+            {
+                tic[0][0] = 'X';            //move removes 2 ways of winning for user totalling 2 ways remaining
+                line1 = false;
+                line4 = false;
+            }
+            
+            else                            //case 8
+            {
+                tic[0][0] = 'X';            //move removes 2 ways of winning for user totalling 2 ways remaining
+                line1 = false;
+                line4 = false;
+            }
+        }
+        
+        
+        else if(move == 5){                 //action for move 5
+            if(tic[0][0] == 'O')
+            {
+                if(tic[0][1] == 'O')        //remaining code recognizes all possible cases and reacts to remove 1
+                {                           //way of winning for the user
+                    tic[0][2] = 'X';
+                    line1 = false;
+                }
+                
+                else if(tic[0][2] == 'O')
+                {
+                    tic[0][1] = 'X';
+                    line1 = false;
+                }
+                
+                else if(tic[1][0] == 'O')
+                {
+                    tic[2][0] = 'X';
+                    line4 = false;
+                }
+                
+                else if(tic[2][0] == 'O')
+                {
+                    tic[1][0] = 'X';
+                    line4 = false;
+                }
+                
+                else if(tic[1][2] == 'O')
+                {
+                    tic[2][0] = 'X';
+                    line4 = false;
+                }
+                
+                else
+                {
+                    if(tic[2][1] == 'O')
+                    tic[2][0] = 'X';
+                    line4 = false;
+                }
+            }
+            
+            else
+            {
+                if(tic[0][2] == 'O' && tic[1][2] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line3 = false;
+                    line6 = false;
+                }
+                
+                else if(tic[1][2] == 'O' && tic[2][1] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                else if(tic[1][2] == 'O' && tic[2][0] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                else if(tic[1][2] == 'O' && tic[1][0] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                else if(tic[2][1] == 'O' && tic[1][0] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                
+                else if(tic[2][2] == 'O' && tic[1][2] == 'O')
+                {
+                    tic[0][2] = 'X';
+                    line6 = false;
+                }
+                
+                else if(tic[0][2] == 'O' && tic[2][1] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                else if(tic[0][2] == 'O' && tic[2][0] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                else if(tic[0][2] == 'O' && tic[1][0] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                else if(tic[0][1] == 'O' && tic[0][2] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                
+                else if(tic[2][2] == 'O' && tic[2][1] == 'O')
+                {
+                    tic[2][0] = 'X';
+                    line3 = false;
+                }
+                
+                else if(tic[2][0] == 'O' && tic[2][1] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line3 = false;
+                }
+                
+                else if(tic[0][2] == 'O' && tic[2][2] == 'O')
+                {
+                    tic[1][2] = 'X';
+                    line6 = false;
+                }
+                
+                else if(tic[0][1] == 'O' && tic[2][2] == 'O')
+                {
+                    tic[1][2] = 'X';
+                    line6 = false;
+                }
+                
+                else if(tic[1][0] == 'O' && tic[2][2] == 'O'){
+                    tic[1][2] = 'X';
+                    line6 = false;
+                }
+
+                else if(tic[0][1] == 'O' && tic[0][2] == 'O')
+                {
+                    tic[1][2] = 'X';
+                    line6 = false;
+                }
+                else if(tic[0][1] == 'O' && tic[1][2] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                }
+                else if(tic[0][1] == 'O' && tic[2][1] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                }
+                else if(tic[0][1] == 'O' && tic[2][0] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                else if(tic[0][1] == 'O' && tic[1][0] == 'O')
+                {
+                    tic[2][2] = 'X';
+                    line6 = false;
+                    line3 = false;
+                }
+                
+                else
+                {
+                    if(tic[2][0] == 'O' && tic[2][2] == 'O')
+                    {
+                    tic[2][1] = 'X';
+                    line3 = false;
+                    }
+                }
+            }
+            
+        }
+        
+        else if(move == 7)              //action for move 7
+        {
+            if(line1 == true)           //algorithm finds rows or columns that are available for user to win and
+            {                           //blocks the row or column
+                if(tic[0][0] == ' ')
+                {
+                    tic[0][0] = 'X';
+                }
+                
+                else if(tic[0][1] == ' ')
+                {
+                    tic[0][1] = 'X';
+                }
+                
+                else
+                {
+                    tic[0][2] = 'X';
+                }
+            }
+            
+            else if(line3 == true)
+            {
+                if(tic[2][0] == ' ')
+                {
+                    tic[2][0] = 'X';
+                }
+                else if(tic[2][1] == ' ')
+                {
+                    tic[2][1] = 'X';
+                }
+                else
+                {
+                    tic[2][2] = 'X';
+                }
+            }
+            
+            else if(line4 == true)
+            {
+                if(tic[2][0] == ' ')
+                {
+                    tic[2][0] = 'X';
+                }
+                
+                else if(tic[1][0] == ' ')
+                {
+                    tic[1][0] = 'X';
+                }
+                
+                else
+                {
+                    tic[0][0] = 'X';
+                }
+            }
+            
+            else if(line6 == true)
+            {
+                if(tic[0][2] == ' ')
+                {
+                    tic[0][2] = 'X';
+                }
+                
+                else if(tic[1][2] == ' '){
+                    tic[1][2] = 'X';
+                }
+                
+                else
+                {
+                    tic[2][2] = 'X';
+                }
+            }
+        }
+        
+        else if(move == 9)          //action for move 9
+        {
+            if(tic[0][1] == ' ')       //algorithm finds remaining space available and fills it if game has not
+            {                           //ended
+                tic[0][1] = 'X';
+            }
+            
+            else if(tic[0][2] == ' ')
+            {
+                tic[0][2] = 'X';
+            }
+            
+            else if(tic[1][0] == ' ')
+            {
+                tic[1][0] = 'X';
+            }
+            
+            else if(tic[1][1] == ' ')
+            {
+                tic[1][1] = 'X';
+            }
+            
+            else if(tic[1][2] == ' ')
+            {
+                tic[1][2] = 'X';
+            }
+            
+            else if(tic[2][0] == ' ')
+            {
+                tic[2][0] = 'X';
+            }
+            
+            else if(tic[2][1] == ' ')
+            {
+                tic[2][1] = 'X';
+            }
+            
+            else
+            {
+                tic[2][2] = 'X';
+            }
+
+        }
+    
+    
+}
+
+void TicTacToe::userMove(int move)
+{
+    int t=0;
+    while(t==0)                     //loop to control user input
+    {
+        cout<< "Type a row number 1 through 3"<< endl;
+        int row;
+        cin>>row;
+        while(cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore();
+            std::cout << "Invalid input, please enter an integer from 1 to 3."<<endl;
+            std::cin>> row;
+        }
+    
+        int column;
+        cout<<"Type a column number 1 through 3"<<endl;
+        cin>>column;
+        
+        while(cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore();
+            std::cout << "Invalid input, please enter an integer from 1 to 3."<<endl;
+            std::cin>> column;
+        }
+        
+        if((row<1||row>3||column<1||column>3))
+        {
+            cout<<"Spot already taken or does not exist. Please choose again.\n"<<endl;
+            t=0;
+            //if the input is not one of the desired characters, send to begining of while loop
+        }
+        
+        else
+        {
+            if(move%2==1)                           //process for odd number
+            {
+                if(tic[row-1][column-1]==' ')       //recognizes if space is filled
+                {
+                    tic[row-1][column-1]='X';
+                    t=1;
+                }
+                else
+                {
+                    cout<<"Spot already taken or does not exist. Please choose again.\n"<<endl;
+                    t=0;
+                    //if spot is filled return to beginning of while loop in function
+                }
+            }
+    
+    
+            else                                    //process for even number
+            {
+                if(tic[row-1][column-1]==' ')       //recognizes if space is filled
+                {
+                    tic[row-1][column-1]='O';
+                    t=1;
+                }
+                else
+                {
+                    cout<<"Spot already taken or does not exist. Please choose again.\n"<<endl;
+                    t=0;
+                    //if spot is filled return to beginning of while loop in function
+                }
+            }
+        }
+    }
+}
+
+void TicTacToe::methodEasy()    //gives outputs and calls functions for the easy menu and game
+{
+    if(CoinFlip()==true)        //if user wins the coinflip
+    {
+        for(int move=1; move<10;)       //loop to run game
+        {
+            userMove(move);     //user goes first because they won the coin flip
+            printBoard();
+            move++;
+            if(checkFin()==true)        //calls checkFin to see if user wins
+            {
+                cout<<"YOU WIN!!!!"<<endl;
+                break;
+            }
+            else if (move==10)          //if move gets iterated to 10 its an automatic tie, because there are only
+            {                           //9 total moves in a game of tic tac toe
+                cout<<"It's a tie nobody wins."<<endl;
+                break;
+            }
+            
+            cout<<"It's the computers turn.\n"<<endl;
+            compLogicEasy(move);        //calls the easy algorithm
+            printBoard();
+            move++;
+            if(checkFin()==true)        //checks if the AI has won
+            {
+                cout<<"You lose :'("<<endl;
+                break;
+            }
+            
+            else if (move==10)          //checks for a tie
+            {
+                cout<<"It's a tie nobody wins."<<endl;
+                break;
+            }
+            
+        }
+    }
+    else                                //if user loses coinflip
+    {
+        for(int move=1; move<10;)
+        {
+            cout<<"It's the computer's turn.\n"<<endl;      //AI goes first
+            compLogicEasy(move);
+            printBoard();
+            move++;
+            if(checkFin()==true)        //checks if AI has won
+            {
+                cout<<"You lose :'("<<endl;
+                break;
+            }
+            else if (move==10)          //checks for tie
+            {
+                cout<<"It's a tie nobody wins."<<endl;
+                break;
+            }
+            
+            userMove(move);         //user goes second
+            printBoard();
+            move++;
+            if(checkFin()==true)        //checks if user has won
+            {
+                cout<<"YOU WIN!!!!"<<endl;
+                break;
+            }
+            
+            else if (move==10)          //checks for tie
+            {
+                cout<<"It's a tie nobody wins."<<endl;
+                break;
+            }
+            
+        }
+    }
+}
+
+void TicTacToe::methodRandom()      //gives outputs and calls functions for the random(medium) menu and game
+{                                   // same logic as the easy method throughout
+    if(CoinFlip()==true)
+    {
+        for(int move=1; move<10;)
+        {
+            userMove(move);
+            printBoard();
+            move++;
+            if(checkFin()==true)
+            {
+                cout<<"YOU WIN!!!!"<<endl;
+                break;
+            }
+            else if (move==10)
+            {
+                cout<<"It's a tie nobody wins."<<endl;
+                break;
+            }
+            
+            cout<<"It's the computer's turn.\n"<<endl;
+            compLogicRandom(move);
+            printBoard();
+            move++;
+            if(checkFin()==true)
+            {
+                cout<<"You lose :'("<<endl;
+                break;
+            }
+            
+            else if (move==10)
+            {
+                cout<<"Its a tie nobody wins."<<endl;
+                break;
+            }
+            
+        }
+    }
+    else
+    {
+        for(int move=1; move<10;)
+        {
+            cout<<"It's the computer's turn.\n"<<endl;
+            compLogicRandom(move);
+            printBoard();
+            move++;
+            if(checkFin()==true)
+            {
+                cout<<"You lose :'("<<endl;
+                break;
+            }
+            else if (move==10)
+            {
+                cout<<"It's a tie nobody wins."<<endl;
+                break;
+            }
+            
+            userMove(move);
+            printBoard();
+            move++;
+            if(checkFin()==true)
+            {
+                cout<<"YOU WIN!!!!"<<endl;
+                break;
+            }
+            
+            else if (move==10)
+            {
+                cout<<"It's a tie nobody wins."<<endl;
+                break;
+            }
+        }
+    }
+}
+
+void TicTacToe::methodImpossible()       //gives outputs and calls functions for the impossible(hard) menu and game
+{
+    cout<<"Because you picked the impossible level, the computer will go first."<<endl;
+    for(int move=1; move<10;)           //AI goes first to make hard algorithm more simplistic and less buggy
+    {
+        cout<<"It's the computer's turn.\n"<<endl;
+        compLogicHard(move);
+        printBoard();
+        move++;
+        if(checkFin()==true)
+        {
+            cout<<"You lose :'("<<endl;
+            break;
+        }
+        
+        else if (move==10)
+        {
+            cout<<"It's a tie nobody wins."<<endl;
+            break;
+        }
+        
+        userMove(move);
+        printBoard();
+        move++;
+        if(checkFin()==true)
+        {
+            cout<<"YOU WIN!!!!"<<endl;
+            break;
+        }
+        
+        else if (move==10)
+        {
+            cout<<"It's a tie nobody wins."<<endl;
+            break;
+        }
+    }
+}
+
+
+
+int main()
+{
+    TicTacToe(1);
+}
